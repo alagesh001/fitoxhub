@@ -8,13 +8,29 @@ import Location from "./pages/Location";
 import Reviews from "./pages/Reviews";
 import Feedback from "./pages/Feedback";
 import TrialWaiver from "./pages/TrialWaver";
+import { useLocation } from "react-router-dom";
 
 export default function App() {
+    const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+
+  // Fetch gym details from query params
+   const gymIdApp =
+    queryParams.get("gymid") ||
+    localStorage.getItem("gymid") ||
+    "default123";
+
+  const gymNameApp =
+    queryParams.get("gymname") ||
+    localStorage.getItem("gymname") ||
+    "FitLife";
+     localStorage.setItem("gymid", gymIdApp);
+  localStorage.setItem("gymname", gymNameApp);
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Navbar */}
       <header className="bg-gray-900 text-white p-4 text-center font-bold text-xl">
-        FitLife Gym
+        {gymNameApp}
       </header>
 
       {/* Routes */}
@@ -32,8 +48,10 @@ export default function App() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white text-center py-6 mt-auto">
-        <p>&copy; 2025 FitLife Gym. All rights reserved.</p>
-      </footer>
+<p>
+  &copy; 2025 {gymNameApp}. <br />
+  All rights reserved.
+</p>      </footer>
     </div>
   );
 }

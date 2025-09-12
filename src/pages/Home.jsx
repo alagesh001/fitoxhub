@@ -11,8 +11,10 @@ const tabs = [
   { key: "reviews", label: "Reviews", desc: "Check out our Google Reviews", path: "/reviews", icon: <Star className="w-6 h-6 text-yellow-400" /> },
   { key: "location", label: "Location", desc: "We are happy to meet and train you.", path: "/location", icon: <MessageSquare className="w-6 h-6 text-teal-400" /> },
   { key: "feedback", label: "Feedback", desc: "Give us your genuine suggestions", path: "/feedback", icon: <MessageSquare className="w-6 h-6 text-teal-400" /> },
-  
+
 ];
+  const gymName =   localStorage.getItem("gymname");
+
   const handleReviewsClick = () => {
     window.open(
       "https://www.google.com/search?q=FitLife+Gym&ludocid=1234567890123456789#lrd=1234567890123456789,3",
@@ -20,9 +22,12 @@ const tabs = [
     );
   };
 export default function Home() {
+   
+
+
  return (
-  <div className="min-h-screen flex flex-col items-center justify-center py-12 px-4 bg-white">
-    <h2 className="text-3xl font-bold mb-8 text-black">Welcome to FitLife Gym</h2>
+  <div className="min-h-screen flex flex-col items-center justify-center py-12 px-4 bg-black">
+    <h2 className="text-3xl font-bold mb-8 text-white">Welcome to {gymName}</h2>
     <div className="flex flex-col space-y-6 w-full max-w-md">
      {tabs
   .filter((tab) => tab.key !== "hidden") // hide a tab
@@ -30,9 +35,12 @@ export default function Home() {
     <Link
       key={tab.key}
       to={tab.path}
-      className="flex items-center p-5 rounded-xl bg-gray-900 text-white shadow-[0_4px_15px_rgba(255,255,255,0.1)] 
-                 hover:shadow-[0_8px_20px_rgba(255,255,0,0.4)] hover:bg-yellow-400 hover:text-black 
-                 transform hover:-translate-y-1 transition-all duration-300"
+      className="flex items-center p-5 rounded-xl bg-gray-900 text-white border border-white
+           shadow-[0_4px_15px_rgba(255,255,255,0.1)] 
+           hover:shadow-[0_8px_20px_rgba(255,255,0,0.4)] 
+           hover:bg-yellow-400 hover:text-black 
+           transform hover:-translate-y-1 transition-all duration-300"
+
       onClick={
         tab.key === "reviews"
           ? (e) => {
