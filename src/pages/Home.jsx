@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { User, IndianRupee , Dumbbell, Users, Star, FileText, ClipboardList, Gift, MessageSquare, FileSignature, Ticket } from "lucide-react";
+import { ApiContext } from "../ApiContext.jsx";
+import { useContext } from "react";
 
-const tabs = [
+
+export default function Home() {
+  const tabs = [
   { key: "enquiry", label: "Enquiry", desc: "Get to know about our packages", path: "/enquiry", icon: <User className="w-6 h-6 text-blue-400" /> },
     { key: "trial-waiver", label: "Book Trial", desc: "Trial Waiver and Release form", path: "/trial-waiver", icon: <Ticket className="w-6 h-6 text-amber-500" /> },
 
@@ -9,20 +13,14 @@ const tabs = [
   { key: "trainers", label: "Trainers", desc: "Achievements & Qualifications of our Trainers", path: "/trainers", icon: <Dumbbell className="w-6 h-6 text-cyan-400" /> },
   { key: "community", label: "Community", desc: "Connect with our fitness family", path: "/community", icon: <Users className="w-6 h-6 text-orange-400" /> },
   { key: "reviews", label: "Reviews", desc: "Check out our Google Reviews", path: "/reviews", icon: <Star className="w-6 h-6 text-yellow-400" /> },
-  { key: "location", label: "Location", desc: "We are happy to meet and train you.", path: "/location", icon: <MessageSquare className="w-6 h-6 text-teal-400" /> },
-  { key: "feedback", label: "Feedback", desc: "Give us your genuine suggestions", path: "/feedback", icon: <MessageSquare className="w-6 h-6 text-teal-400" /> },
+  { key: "location", label: "Location", desc: "We are happy to meet and train you.", path: "/location", icon: <MessageSquare className="w-6 h-6 text-teal-400" /> }
+  //{ key: "feedback", label: "Feedback", desc: "Give us your genuine suggestions", path: "/feedback", icon: <MessageSquare className="w-6 h-6 text-teal-400" /> },
 
 ];
   const gymName =   localStorage.getItem("gymname");
+  const gymid =   localStorage.getItem("gymid");
+  const { hubData } = useContext(ApiContext);
 
-  const handleReviewsClick = () => {
-    window.open(
-      "https://www.google.com/search?q=FitLife+Gym&ludocid=1234567890123456789#lrd=1234567890123456789,3",
-      "_blank"
-    );
-  };
-export default function Home() {
-   
 
 
  return (
@@ -46,7 +44,7 @@ export default function Home() {
           ? (e) => {
               e.preventDefault();
               window.open(
-          "https://search.google.com/local/reviews?placeid=ChIJtxO952jxDDkR0MettqmZScY",
+          hubData.review_url,
           "_blank"
         )
             }

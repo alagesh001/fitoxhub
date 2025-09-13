@@ -9,6 +9,7 @@ import Reviews from "./pages/Reviews";
 import Feedback from "./pages/Feedback";
 import TrialWaiver from "./pages/TrialWaver";
 import { useLocation } from "react-router-dom";
+import { ApiProvider } from "./ApiContext.jsx";
 
 export default function App() {
     const { search } = useLocation();
@@ -27,6 +28,7 @@ export default function App() {
      localStorage.setItem("gymid", gymIdApp);
   localStorage.setItem("gymname", gymNameApp);
   return (
+    
     <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Navbar */}
       <header className="bg-gray-900 text-white p-4 text-center font-bold text-xl">
@@ -34,6 +36,8 @@ export default function App() {
       </header>
 
       {/* Routes */}
+       <ApiProvider>
+   
      <Routes>
   <Route path="/" element={<Home />} />
   <Route path="/enquiry" element={<Enquiry />} />
@@ -45,7 +49,7 @@ export default function App() {
   <Route path="/feedback" element={<Feedback />} />
   <Route path="/trial-waiver" element={<TrialWaiver />} />
 </Routes>
-
+ </ApiProvider>
       {/* Footer */}
       <footer className="bg-gray-900 text-white text-center py-6 mt-auto">
 <p>

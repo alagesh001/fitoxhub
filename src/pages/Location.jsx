@@ -1,7 +1,9 @@
-import { useState } from "react";
+import React, { useState,useContext } from "react";
+import { ApiContext } from "../ApiContext.jsx";
 
 export default function Location() {
   const [loading, setLoading] = useState(true);
+  const { hubData } = useContext(ApiContext);
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-6">
@@ -22,8 +24,7 @@ export default function Location() {
 
         {/* Map */}
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.638464106338!2d77.37964527613735!3d28.64059578371329!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf168e7bd13b7%3A0xc64999a9b6adc7d0!2sFITOX!5e0!3m2!1sen!2sin!4v1757566828095!5m2!1sen!2sin"
-          width="100%"
+          src={hubData.loc_url}
           height="500"
           style={{ border: 0 }}
           allowFullScreen

@@ -8,7 +8,7 @@ export default function TrialWaiver() {
   const [agree, setAgree] = useState(false);
   const [status, setStatus] = useState("");
 
-  const gymid = "86966844"; // replace dynamically if needed
+  const gymid =   localStorage.getItem("gymid") || 0;
   const typeIs = 0;    // default 0
 
   // Get today's date in YYYY-MM-DD format (for min attribute)

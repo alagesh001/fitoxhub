@@ -6,8 +6,7 @@ export default function Enquiry() {
   const [leadmob, setLeadmob] = useState("");
   const [status, setStatus] = useState("");
   const [accepted, setAccepted] = useState(false);
-
-  const gymid = "86966844";   // replace dynamically if needed
+  const gymid =   localStorage.getItem("gymid") || 0;
   const typeIs = 0;      // default 0
 
   const handleSubmit = async () => {
