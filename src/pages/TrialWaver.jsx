@@ -9,7 +9,7 @@ export default function TrialWaiver() {
   const [status, setStatus] = useState("");
 
   const gymid =   localStorage.getItem("gymid") || 0;
-  const typeIs = 0;    // default 0
+  const typeIs = 1;    // default 0
 
   // Get today's date in YYYY-MM-DD format (for min attribute)
   const today = new Date().toISOString().split("T")[0];
@@ -42,6 +42,8 @@ export default function TrialWaiver() {
 
     try {
       const res = await axios.post("https://oxadmedia.online/api/add-hub-enquiry", payload);
+      setFullname("");
+      setLeadmob("");
       setStatus("✅ Waiver submitted successfully!");
       console.log("Response:", res.data);
     } catch (err) {
