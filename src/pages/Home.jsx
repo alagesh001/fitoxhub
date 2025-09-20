@@ -23,34 +23,66 @@ export default function Home() {
     { key: "reviews", label: "Reviews", desc: "Check out our Google Reviews", path: "/reviews", icon: <Star className="w-6 h-6 text-yellow-400" /> },
     { key: "location", label: "Location", desc: "We are happy to meet and train you.", path: "/location", icon: <MessageSquare className="w-6 h-6 text-teal-400" /> }
   ];
+    const { hubadvertData } = useContext(ApiContext);
+  
+const iconMap = {
+  education: <GraduationCap className="w-8 h-8 text-white" />,
+  salon: <Briefcase className="w-8 h-8 text-white" />,
+  health: <HeartPulse className="w-8 h-8 text-white" />,
+};
 
+const gradientMap = {
+  education: "from-pink-500 via-red-500 to-yellow-400",
+  salon: "from-blue-500 via-indigo-500 to-purple-500",
+  health: "from-green-400 via-emerald-500 to-teal-500",
+};
+// If ads data not ready yet, show loading
+let ads = [];
+if (hubadvertData) {
+  // Only include ads where type !== "pt"
+  ads = hubadvertData
+    .filter(ad => ad.type !== "pt")
+    .map(item => ({
+      id: item.id,
+      title: item.title,
+      desc: item.description,
+      icon: iconMap[item.type] || <Briefcase className="w-8 h-8 text-white" />,
+      link: item.map_link || "", // empty string if null
+      mobile: item.mob || "",
+      gradient: gradientMap[item.type] || "from-gray-400 via-gray-500 to-gray-600",
+      area: item.area_name || "",
+      type: item.type,
+    }));
+
+  console.log("Filtered Ads Array:", ads);
+}
   // 🎯 Ads JSON
-  const ads = [
-    {
-      id: 1,
-      title: "Sharma Spoken English",
-      desc: "Boost your career with expert mentors",
-      icon: <GraduationCap className="w-8 h-8 text-white" />,
-      link: "https://wa.me/919999999999",
-      gradient: "from-pink-500 via-red-500 to-yellow-400"
-    },
-    {
-      id: 2,
-      title: "Jawed Habib",
-      desc: "Professional Hair stylist",
-      icon: <Briefcase className="w-8 h-8 text-white" />,
-      link: "https://wa.me/918888888888",
-      gradient: "from-blue-500 via-indigo-500 to-purple-500"
-    },
-    {
-      id: 3,
-      title: "Jacob Wellness & Nutrition Clinic",
-      desc: "Personalized diet & lifestyle programs",
-      icon: <HeartPulse className="w-8 h-8 text-white" />,
-      link: "https://wa.me/917777777777",
-      gradient: "from-green-400 via-emerald-500 to-teal-500"
-    }
-  ];
+  // const ads = [
+  //   {
+  //     id: 1,
+  //     title: "Sharma Spoken English",
+  //     desc: "Boost your career with expert mentors",
+  //     icon: <GraduationCap className="w-8 h-8 text-white" />,
+  //     link: "https://wa.me/919999999999",
+  //     gradient: "from-pink-500 via-red-500 to-yellow-400"
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Jawed Habib",
+  //     desc: "Professional Hair stylist",
+  //     icon: <Briefcase className="w-8 h-8 text-white" />,
+  //     link: "https://wa.me/918888888888",
+  //     gradient: "from-blue-500 via-indigo-500 to-purple-500"
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Jacob Wellness & Nutrition Clinic",
+  //     desc: "Personalized diet & lifestyle programs",
+  //     icon: <HeartPulse className="w-8 h-8 text-white" />,
+  //     link: "https://wa.me/917777777777",
+  //     gradient: "from-green-400 via-emerald-500 to-teal-500"
+  //   }
+  // ];
 
   const gymName = localStorage.getItem("gymname");
   const { hubData } = useContext(ApiContext);
@@ -111,9 +143,9 @@ export default function Home() {
               </Link>
 
               {/* Inject ads after certain tabs */}
-              {index === 0 && <AdCard ad={ads[0]} />} {/* After Enquiry */}
-              {index === 2 && <AdCard ad={ads[1]} />} {/* After Packages */}
-              {index === 4 && <AdCard ad={ads[2]} />} {/* After Community */}
+             {index === 0 && ads[0] && <AdCard ad={ads[0]} />} {/* After Enquiry */}
+{index === 2 && ads[1] && <AdCard ad={ads[1]} />} {/* After Packages */}
+{index === 4 && ads[2] && <AdCard ad={ads[2]} />} {/* After Community */}
             </div>
           ))}
       </div>

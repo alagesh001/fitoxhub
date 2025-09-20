@@ -25,8 +25,16 @@ export default function App() {
     queryParams.get("gymname") ||
     localStorage.getItem("gymname") ||
     "FitLife";
+
+     const gymAreaC =
+    queryParams.get("area_c") ||
+    localStorage.getItem("area_c") ||
+    0;
+
      localStorage.setItem("gymid", gymIdApp);
   localStorage.setItem("gymname", gymNameApp);
+    localStorage.setItem("area_c", gymAreaC);
+
   return (
     
     <div className="min-h-screen flex flex-col bg-gray-100">
