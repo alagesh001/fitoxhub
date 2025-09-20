@@ -11,12 +11,11 @@ export function ApiProvider({ children }) {
     const [hubadvertData, setHubAdvertData] = useState(null);
 
   const gymidis =   localStorage.getItem("gymid") || 0;
-    const area_code =   localStorage.getItem("area_c") || 0;
   useEffect(() => {
     if (!hubtrainerData) {
       axios
         .get("https://oxadmedia.online/api/get-ad-data", {
-          params: { gymid: gymidis, area_code: area_code },
+          params: { gymid: gymidis },
         })
         .then((res) => {
           if (res.data.success) {
