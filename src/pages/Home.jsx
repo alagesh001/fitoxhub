@@ -37,25 +37,23 @@ const gradientMap = {
   health: "from-green-400 via-emerald-500 to-teal-500",
 };
 // If ads data not ready yet, show loading
-let ads = [];
-if (hubadvertData) {
-  // Only include ads where type !== "pt"
-  ads = hubadvertData
-    .filter(ad => ad.type !== "pt")
-    .map(item => ({
-      id: item.id,
-      title: item.title,
-      desc: item.description,
-      icon: iconMap[item.type] || <Briefcase className="w-8 h-8 text-white" />,
-      link: item.map_link || "", // empty string if null
-      mobile: item.mob || "",
-      gradient: gradientMap[item.type] || "from-gray-400 via-gray-500 to-gray-600",
-      area: item.area_name || "",
-      type: item.type,
-    }));
+const ads = hubadvertData
+  ? hubadvertData
+      .filter(ad => ad.type !== "pt") // exclude personal training ads
+      .map(item => ({
+        id: item.id,
+        title: item.title,
+        desc: item.description,
+        sub: item.sub_title,
 
-  console.log("Filtered Ads Array:", ads);
-}
+        icon: iconMap[item.type] || <Briefcase className="w-8 h-8 text-white" />,
+        link: item.map_link || "",   // empty string if null
+        mobile: item.mob || "",
+        gradient: gradientMap[item.type] || "from-gray-400 via-gray-500 to-gray-600",
+        area: item.area_name || "",
+        type: item.type,
+      }))
+  : [];
   // 🎯 Ads JSON
   // const ads = [
   //   {
@@ -88,26 +86,47 @@ if (hubadvertData) {
   const { hubData } = useContext(ApiContext);
 
   // Helper component for Ads
-  const AdCard = ({ ad }) => (
-   <a
-  key={`ad-${ad.id}`}
-  href={ad.link}
-  target="_blank"
-  rel="noopener noreferrer"
-  className={`flex items-center p-6 mt-5 rounded-2xl bg-gradient-to-r ${ad.gradient} text-white
-              shadow-[0_6px_20px_rgba(0,0,0,0.4)]
-              hover:shadow-[0_8px_25px_rgba(255,255,255,0.4)]
-              transform hover:-translate-y-1 hover:scale-105 transition-all duration-300`}
->
-  <div className="mr-4">{ad.icon}</div>
-  <div className="text-left">
-    <h3 className="text-xl font-bold">{ad.title}</h3>
-    <p className="text-sm opacity-90">{ad.desc}</p>
-    <p className="text-xs italic opacity-80 mt-1">Tap to connect via WhatsApp</p>
-  </div>
-</a>
+const AdCard = ({ ad }) => (
+  <a
+    key={`ad-${ad.id}`}
+    href={ad.link || "#"}
+    target="_blank"
+    rel="noopener noreferrer"
+    className={`flex items-center p-6 mt-5 rounded-2xl bg-gradient-to-r ${ad.gradient} text-white
+                shadow-[0_6px_20px_rgba(0,0,0,0.4)]
+                hover:shadow-[0_8px_25px_rgba(255,255,255,0.4)]
+                transform hover:-translate-y-1 hover:scale-105 transition-all duration-300`}
+  >
+    {/* Icon */}
+    <div className="mr-4 flex-shrink-0">
+      {ad.icon}
+    </div>
 
-  );
+    {/* Text content */}
+    <div className="text-left flex-1">
+      <h3 className="text-xl font-bold">{ad.title}</h3>
+
+      {ad.sub && (
+        <p className="text-lg font-extrabold text-yellow-300 bg-black/20 inline-block px-2 py-1 rounded-lg mt-1 animate-pulse">
+          {ad.sub}
+        </p>
+      )}
+
+      {ad.desc && <p className="text-sm opacity-90 mt-2">{ad.desc}</p>}
+
+      {ad.mobile && (
+        <p className="text-sm opacity-90 mt-1">
+          <span className="font-semibold">Contact: </span>{ad.mobile}
+        </p>
+      )}
+
+      {ad.link && (
+        <p className="text-xs italic opacity-80 mt-2">Tap to connect</p>
+      )}
+    </div>
+  </a>
+);
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center py-12 px-4 bg-black relative">

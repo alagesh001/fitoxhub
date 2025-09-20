@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import { ApiContext } from "../ApiContext.jsx";
-import { MessageCircle } from "lucide-react";
+import { HeartHandshake } from "lucide-react";
 
 export default function Trainers() {
   const [selectedTrainer, setSelectedTrainer] = useState(null);
-  const { hubtrainerData } = useContext(ApiContext);
+  const { hubtrainerData, hubadvertData} = useContext(ApiContext);
 
   // Define color / style classes per trainer type
   const typeClasses = {
@@ -15,19 +15,20 @@ export default function Trainers() {
   };
 
   // 🟢 External trainers (ads)
-    const externalTrainers = [
-    {
-      id: "ext1",
-      title: "🔥 Personal Training Offer",
-      content: "Transform your fitness journey today!",
-      name: "Arjun Sharma",
-      info: "Strength & Conditioning | 8 yrs exp",
-      location: "Greater Kailash",
-      age: 29,
-      whatsapp: "919876543210",
-    }
- 
-  ];
+const externalTrainers = hubadvertData
+  ? hubadvertData
+      .filter(ad => ad.type === "pt") // Only include PT type ads
+      .map(item => ({
+        id: item.id,
+        title: item.sub_title, // or item.title if you want dynamic titles
+        content: "Transform your fitness journey today!",
+        name: item.title, // using ad title as name
+        info: item.description, // customize as needed
+        location: item.area_name || "",
+        age: item.age || null, // if you have age in data
+        link: item.map_link || "",
+      }))
+  : [];
   // const externalTrainers = [
   //   {
   //     id: "ext1",
@@ -101,17 +102,17 @@ export default function Trainers() {
       <p className="text-sm opacity-90 mb-3">{trainer.content}</p>
       <p className="text-lg">{trainer.name}</p>
       <p className="text-sm opacity-90 mb-2">{trainer.info}</p>
-      <p className="mb-4">{trainer.age} yrs</p>
+      {/* <p className="mb-4">{trainer.age} yrs</p> */}
 
-      <a
-        href={`https://wa.me/${trainer.whatsapp}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 px-4 py-2 bg-white text-green-600 font-semibold rounded-full shadow-md hover:scale-105 transition"
-      >
-        <MessageCircle className="w-5 h-5" />
-        WhatsApp
-      </a>
+    <a
+  href={trainer.link}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-2 px-4 py-2 bg-white text-green-600 font-semibold rounded-full shadow-md hover:scale-105 transition mt-4"
+>
+  <HeartHandshake className="w-5 h-5" />
+  Connect
+</a>
     </div>
   ))}
 </div>
