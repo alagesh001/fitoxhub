@@ -98,7 +98,7 @@ const AdCard = ({ ad }) => (
                 transform hover:-translate-y-1 hover:scale-105 transition-all duration-300`}
   >
      {ad.area && (
-      <span className="absolute bottom-4 right-4 text-sm font-bold text-white px-3 py-1 rounded-full shadow-lg ">
+<span className="absolute bottom-4 right-4 text-sm italic text-black bg-white px-3 py-1 opacity-80 rounded-full shadow-md">
         {ad.area}
       </span>
     )}
