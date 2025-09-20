@@ -79,44 +79,48 @@ const externalTrainers = hubadvertData
 
   return (
     <div className="p-8 text-center">
-      {/* 🔥 External Trainers Ads Section */}
-      <h2 className="text-2xl font-extrabold mb-4 text-gray-800">
-        Fitox Featured Personal Trainers
-      </h2>
-      <div className="overflow-x-auto">
-    <div className="flex gap-6 pb-4 max-w-6xl mx-auto overflow-x-auto">
-  {externalTrainers.map((trainer) => (
-    <div
-      key={trainer.id}
-      className="relative min-w-[280px] flex-shrink-0 p-6 rounded-2xl shadow-lg border-4 
-                 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-500 text-white"
-    >
-      {/* Location Badge (Top Right) */}
-      <span
-        className="absolute top-3 right-3 px-3 py-1 text-xs font-bold rounded-full bg-white text-green-600 animate-pulse shadow-md"
-      >
-        📍 {trainer.location}
-      </span>
+     {/* 🔥 External Trainers Ads Section */}
+{externalTrainers.length > 0 && (
+  <>
+    <h2 className="text-2xl font-extrabold mb-4 text-gray-800">
+      Fitox Featured Personal Trainers
+    </h2>
+    <div className="overflow-x-auto">
+      <div className="flex gap-6 pb-4 max-w-6xl mx-auto overflow-x-auto">
+        {externalTrainers.map((trainer) => (
+          <div
+            key={trainer.id}
+            className="relative min-w-[280px] flex-shrink-0 p-6 rounded-2xl shadow-lg border-4 
+                       bg-gradient-to-r from-green-400 via-emerald-400 to-teal-500 text-white"
+          >
+            {/* Location Badge (Top Right) */}
+            <span
+              className="absolute top-3 right-3 px-3 py-1 text-xs font-bold rounded-full bg-white text-green-600 animate-pulse shadow-md"
+            >
+              📍 {trainer.location}
+            </span>
 
-      <h3 className="text-lg font-bold mt-6 mb-1">{trainer.title}</h3>
-      <p className="text-sm opacity-90 mb-3">{trainer.content}</p>
-      <p className="text-lg">{trainer.name}</p>
-      <p className="text-sm opacity-90 mb-2">{trainer.info}</p>
-      {/* <p className="mb-4">{trainer.age} yrs</p> */}
+            <h3 className="text-lg font-bold mt-6 mb-1">{trainer.title}</h3>
+            <p className="text-sm opacity-90 mb-3">{trainer.content}</p>
+            <p className="text-lg">{trainer.name}</p>
+            <p className="text-sm opacity-90 mb-2">{trainer.info}</p>
 
-    <a
-  href={trainer.link}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-flex items-center gap-2 px-4 py-2 bg-white text-green-600 font-semibold rounded-full shadow-md hover:scale-105 transition mt-4"
->
-  <HeartHandshake className="w-5 h-5" />
-  Connect
-</a>
-    </div>
-  ))}
-</div>
+            <a
+              href={trainer.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white text-green-600 font-semibold rounded-full shadow-md hover:scale-105 transition mt-4"
+            >
+              <HeartHandshake className="w-5 h-5" />
+              Connect
+            </a>
+          </div>
+        ))}
       </div>
+    </div>
+  </>
+)}
+
 
       {/* 🏋️ Gym Trainers Section */}
       <h2 className="text-3xl font-extrabold mb-8 mt-12 text-gray-800">

@@ -97,6 +97,11 @@ const AdCard = ({ ad }) => (
                 hover:shadow-[0_8px_25px_rgba(255,255,255,0.4)]
                 transform hover:-translate-y-1 hover:scale-105 transition-all duration-300`}
   >
+     {ad.area && (
+      <span className="absolute bottom-4 right-4 text-sm font-bold text-white px-3 py-1 rounded-full shadow-lg ">
+        {ad.area}
+      </span>
+    )}
     {/* Icon */}
     <div className="mr-4 flex-shrink-0">
       {ad.icon}
@@ -113,7 +118,7 @@ const AdCard = ({ ad }) => (
       )}
 
       {ad.desc && <p className="text-sm opacity-90 mt-2">{ad.desc}</p>}
-
+ 
       {ad.mobile && (
         <p className="text-sm opacity-90 mt-1">
           <span className="font-semibold">Contact: </span>{ad.mobile}
