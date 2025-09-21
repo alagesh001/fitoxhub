@@ -100,7 +100,8 @@ const AdCard = ({ ad }) => (
   >
      {ad.area && (
 <span className="absolute bottom-4 right-4 text-sm italic text-black bg-white px-3 py-1 opacity-80 rounded-full shadow-md">
-        {ad.area}
+                <span className="font-semibold">📍</span> {ad.area}
+
       </span>
     )}
     {/* Icon */}
@@ -122,7 +123,7 @@ const AdCard = ({ ad }) => (
  
       {ad.mobile && (
         <p className="text-sm opacity-90 mt-1">
-          <span className="font-semibold">Contact: </span>{ad.mobile}
+        <span className="font-semibold">📞</span> {ad.mobile}
         </p>
       )}
 
