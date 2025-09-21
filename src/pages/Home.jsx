@@ -8,7 +8,7 @@ import {
   MessageSquare,
   GraduationCap,
   Briefcase,
-  HeartPulse
+  HeartPulse,ClipboardCheck 
 } from "lucide-react";
 import { ApiContext } from "../ApiContext.jsx";
 import { useContext } from "react";
@@ -18,6 +18,7 @@ export default function Home() {
     { key: "enquiry", label: "Enquiry", desc: "Get to know about our packages", path: "/enquiry", icon: <User className="w-6 h-6 text-blue-400" /> },
     { key: "trial-waiver", label: "Book Trial", desc: "Trial Waiver and Release form", path: "/trial-waiver", icon: <Dumbbell className="w-6 h-6 text-amber-500" /> },
     { key: "packages", label: "Packages", desc: "Find Packages that suit you", path: "/packages", icon: <IndianRupee className="w-6 h-6 text-purple-400" /> },
+        { key: "attendance", label: "Mark Attendance", desc: "Win exciting rewards", path: "/attendance", icon: <ClipboardCheck  className="w-6 h-6 text-purple-400" /> },
     { key: "trainers", label: "Trainers", desc: "Achievements & Qualifications of our Trainers", path: "/trainers", icon: <Dumbbell className="w-6 h-6 text-cyan-400" /> },
     { key: "community", label: "Community", desc: "Connect with our fitness family", path: "/community", icon: <Users className="w-6 h-6 text-orange-400" /> },
     { key: "reviews", label: "Reviews", desc: "Check out our Google Reviews", path: "/reviews", icon: <Star className="w-6 h-6 text-yellow-400" /> },

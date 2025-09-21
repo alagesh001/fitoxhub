@@ -8,6 +8,8 @@ import Location from "./pages/Location";
 import Reviews from "./pages/Reviews";
 import Feedback from "./pages/Feedback";
 import TrialWaiver from "./pages/TrialWaver";
+import Attendance from "./pages/Attendance";
+
 import { useLocation } from "react-router-dom";
 import { ApiProvider } from "./ApiContext.jsx";
 
@@ -46,6 +48,8 @@ export default function App() {
   <Route path="/" element={<Home />} />
   <Route path="/enquiry" element={<Enquiry />} />
   <Route path="/packages" element={<Package />} />
+   <Route path="/attendance" element={<Attendance />} />
+
   <Route path="/trainers" element={<Trainers />} />
   <Route path="/community" element={<Community />} />
   <Route path="/location" element={<Location />} />
