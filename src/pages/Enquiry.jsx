@@ -1,135 +1,190 @@
-import { useRef, useEffect, useContext } from "react";
-import { Youtube, Instagram, Facebook } from "lucide-react";
+import { useState,useContext,useRef,useEffect} from "react";
+import axios from "axios";
 import { ApiContext } from "../ApiContext.jsx";
+import { UserCheck, Briefcase } from "lucide-react";
 
-export default function Community({ ads }) {
-  const { hubData } = useContext(ApiContext);
-  const scrollRef = useRef(null);
+export default function Enquiry() {
+  const [leadname, setLeadname] = useState("");
+  const [leadmob, setLeadmob] = useState("");
+  const [status, setStatus] = useState("");
+  const [accepted, setAccepted] = useState(false);
+  const gymid =   localStorage.getItem("gymid") || 0;
+  const typeIs = 0;      // default 0
+      const { hubadvertData } = useContext(ApiContext);
+const iconMap = {
+  gym: <UserCheck className="w-8 h-8 text-white" />,
+};
+const gradientMap = {
+  gym: "from-indigo-500 to-violet-600",
+};
+ const scrollRef = useRef(null);
 
-  // Auto-scroll only the ads
+  const ads = hubadvertData
+    ? hubadvertData
+        .filter((ad) => ad.type !== "pt")
+        .map((item) => ({
+          id: item.id,
+          title: item.title,
+          desc: item.description,
+          sub: item.sub_title,
+          icon:
+            iconMap[item.type] || (
+              <Briefcase className="w-8 h-8 text-white" />
+            ),
+          link: item.map_link || "",
+          mobile: item.mob || "",
+          gradient:
+            gradientMap[item.type] ||
+            "from-gray-400 via-gray-500 to-gray-600",
+          area: item.area_name || "",
+          type: item.type,
+        }))
+    : [];
   useEffect(() => {
-    if (!scrollRef.current || !ads || ads.length === 0) return;
+    if (!scrollRef.current || ads.length === 0) return;
 
     const container = scrollRef.current;
-    const interval = setInterval(() => {
-      const scrollWidth = container.scrollWidth;
-      const clientWidth = container.clientWidth;
-
-      if (container.scrollLeft + clientWidth >= scrollWidth) {
+    const scrollInterval = setInterval(() => {
+      if (container.scrollLeft + container.offsetWidth >= container.scrollWidth) {
+        // reached end → go back to start
         container.scrollTo({ left: 0, behavior: "smooth" });
       } else {
-        container.scrollBy({ left: clientWidth, behavior: "smooth" });
+        container.scrollBy({ left: container.offsetWidth, behavior: "smooth" });
       }
     }, 2000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(scrollInterval);
   }, [ads]);
+  const handleSubmit = async () => {
+      if (!accepted) {
+      setStatus("⚠️ Please accept the terms before submitting.");
+      return;
+    }
+    setStatus("Submitting...");
 
-  if (!hubData) return <p>Loading...</p>;
+    try {
+      const res = await axios.post("https://oxadmedia.online/api/add-hub-enquiry", {
+        gymid,
+        leadname,
+        leadmob,
+        typeIs,
+              });
+
+      setStatus("✅ Enquiry sent successfully!");
+      console.log("Response:", res.data);
+    } catch (err) {
+      console.error("Error:", err);
+      setStatus("❌ Failed to send enquiry. Try again.");
+    }
+  };
 
   return (
-    <div className="p-8 text-center max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Join Our Community</h2>
-      <p className="text-gray-600 mb-6">
-        Be part of our fitness family! Share your progress, motivate others, and
-        grow together.
-      </p>
+    <div className="p-8 text-center">
+      <h2 className="text-2xl font-bold mb-4">Send us an Enquiry</h2>
 
-      {/* Social Links */}
-      <div className="flex flex-col items-center gap-4 mb-8">
-        {hubData.yt_url && (
-          <a
-            href={hubData.yt_url}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 px-6 py-3 w-60 justify-center bg-red-600 text-white rounded-lg hover:bg-red-700"
-          >
-            <Youtube size={20} /> YouTube
-          </a>
-        )}
-        {hubData.insta_url && (
-          <a
-            href={hubData.insta_url}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 px-6 py-3 w-60 justify-center bg-pink-500 text-white rounded-lg hover:bg-pink-600"
-          >
-            <Instagram size={20} /> Instagram
-          </a>
-        )}
-        {hubData.fb_url && (
-          <a
-            href={hubData.fb_url}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 px-6 py-3 w-60 justify-center bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            <Facebook size={20} /> Facebook
-          </a>
-        )}
-      </div>
+      <div className="max-w-md mx-auto space-y-4">
+        <input
+          type="text"
+          placeholder="Your Name"
+          value={leadname}
+          onChange={(e) => setLeadname(e.target.value)}
+          className="w-full px-4 py-2 border rounded-lg"
+          required
+        />
 
-      {/* Scrollable Ads */}
-      {ads.length > 0 && (
-        <div
-          ref={scrollRef}
-          className="mt-6 flex overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth space-x-4"
-        >
-          {ads.map((ad, index) => {
-            const vibrantGradients = [
-              "from-pink-500 via-red-500 to-yellow-500",
-              "from-indigo-500 via-purple-500 to-pink-500",
-              "from-green-400 via-lime-400 to-yellow-300",
-              "from-blue-400 via-cyan-400 to-teal-400",
-              "from-orange-400 via-pink-400 to-red-400",
-              "from-rose-400 via-fuchsia-400 to-indigo-400",
-            ];
-            const gradient = vibrantGradients[index % vibrantGradients.length];
+        <input
+          type="text"
+          placeholder="Your Mobile"
+          value={leadmob}
+          onChange={(e) => setLeadmob(e.target.value)}
+          className="w-full px-4 py-2 border rounded-lg"
+          required
+        />
 
-            return (
-              <a
-                key={ad.id}
-                href={ad.link || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`flex-shrink-0 w-72 snap-center p-5 rounded-2xl shadow-lg hover:scale-[1.05] transition-transform
-                            bg-gradient-to-r ${gradient} text-white cursor-pointer`}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  {ad.icon}
-                  <h3 className="text-lg font-bold">{ad.title}</h3>
-                </div>
-
-                <p className="text-sm mb-2">{ad.desc}</p>
-
-                {ad.sub && (
-                  <p className="text-lg font-extrabold text-yellow-400 
-                                bg-black/40 inline-block px-3 py-1 rounded-xl mt-1 
-                                shadow-lg shadow-yellow-400/50
-                                animate-[pulse_1.5s_ease-in-out_infinite] 
-                                transform-gpu hover:scale-105 transition-transform">
-                    {ad.sub}
-                  </p>
-                )}
-
-                {/* Mobile and Location */}
-                <div className="mt-3 space-y-1 text-sm">
-                  {ad.mobile && (
-                    <p className="flex items-center gap-1">
-                      <span className="font-semibold">📞</span> {ad.mobile}
-                    </p>
-                  )}
-                  {ad.area && (
-                    <p className="flex items-center gap-1">
-                      <span className="font-semibold">📍</span> {ad.area}
-                    </p>
-                  )}
-                </div>
-              </a>
-            );
-          })}
+         {/* Acceptance checkbox */}
+        <div className="flex items-start space-x-2 text-sm text-gray-600">
+          <input
+            type="checkbox"
+            checked={accepted}
+            onChange={(e) => setAccepted(e.target.checked)}
+            className="mt-1"
+          />
+          <span>
+            I agree that my mobile number will be used only for gym-related
+            communication.
+          </span>
         </div>
-      )}
+
+        <button
+          onClick={handleSubmit}
+          className="w-full bg-yellow-400 py-2 rounded-lg font-semibold hover:bg-yellow-500"
+        >
+          Submit
+        </button>
+
+        {status && <p className="mt-4 text-sm">{status}</p>}
+      </div>
+                     {/* Scrollable Ads */}
+{ads.length > 0 && (
+  <div
+    ref={scrollRef}
+    className="mt-6 flex overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth space-x-4"
+  >
+    {ads.map((ad, index) => {
+      const vibrantGradients = [
+        "from-pink-500 via-red-500 to-yellow-500",
+        "from-indigo-500 via-purple-500 to-pink-500",
+        "from-green-400 via-lime-400 to-yellow-300",
+        "from-blue-400 via-cyan-400 to-teal-400",
+        "from-orange-400 via-pink-400 to-red-400",
+        "from-rose-400 via-fuchsia-400 to-indigo-400",
+      ];
+      const gradient = vibrantGradients[index % vibrantGradients.length];
+
+      return (
+    <a
+  key={ad.id}
+  href={ad.link || "#"}
+  target="_blank"
+  rel="noopener noreferrer"
+  className={`flex-shrink-0 w-72 snap-center p-5 rounded-2xl shadow-lg hover:scale-[1.05] transition-transform
+              bg-gradient-to-r ${gradient} text-white`}
+>
+  <div className="flex items-center gap-3 mb-3">
+    {ad.icon}
+    <h3 className="text-lg font-bold">{ad.title}</h3>
+  </div>
+
+  <p className="text-sm mb-2">{ad.desc}</p>
+
+  {ad.sub && (
+  <p className="text-lg font-extrabold text-yellow-400 
+                bg-black/40 inline-block px-3 py-1 rounded-xl mt-1 
+                shadow-lg shadow-yellow-400/50
+                animate-[pulse_1.5s_ease-in-out_infinite] 
+                transform-gpu hover:scale-105 transition-transform">
+      {ad.sub}
+    </p>
+  )}
+
+  {/* Mobile and Location */}
+  <div className="mt-3 space-y-1 text-sm">
+    {ad.mobile && (
+      <p className="flex items-center gap-1">
+        <span className="font-semibold">📞</span> {ad.mobile}
+      </p>
+    )}
+    {ad.area && (
+      <p className="flex items-center gap-1">
+        <span className="font-semibold">📍</span> {ad.area}
+      </p>
+    )}
+  </div>
+</a>
+      );
+    })}
+  </div>
+)}
     </div>
   );
 }
