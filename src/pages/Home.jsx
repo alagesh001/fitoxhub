@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import {
   User,
-  IndianRupee,
+  IndianRupee,Book ,
   Dumbbell,
   Users,
   Star,
@@ -16,10 +16,10 @@ import { useContext } from "react";
 export default function Home() {
   const tabs = [
     { key: "enquiry", label: "Enquiry", desc: "Get to know about our packages", path: "/enquiry", icon: <User className="w-6 h-6 text-blue-400" /> },
-    { key: "trial-waiver", label: "Book Trial", desc: "Trial Waiver and Release form", path: "/trial-waiver", icon: <Dumbbell className="w-6 h-6 text-amber-500" /> },
-    { key: "packages", label: "Packages", desc: "Find Packages that suit you", path: "/packages", icon: <IndianRupee className="w-6 h-6 text-purple-400" /> },
+    { key: "trial-waiver", label: "Book Trial", desc: "Trial Waiver and Release form", path: "/trial-waiver", icon: <GraduationCap className="w-6 h-6 text-amber-500" /> },
+    { key: "packages", label: "Courses", desc: "Find Packages that suit you", path: "/packages", icon: <Book className="w-6 h-6 text-purple-400" /> },
         { key: "attendance", label: "Mark Attendance", desc: "Win exciting rewards", path: "/attendance", icon: <ClipboardCheck  className="w-6 h-6 text-purple-400" /> },
-    { key: "trainers", label: "Trainers", desc: "Achievements & Qualifications of our Trainers", path: "/trainers", icon: <Dumbbell className="w-6 h-6 text-cyan-400" /> },
+    { key: "trainers", label: "Tutors", desc: "Achievements & Qualifications of our Trainers", path: "/trainers", icon: <GraduationCap className="w-6 h-6 text-cyan-400" /> },
     { key: "community", label: "Community", desc: "Connect with our fitness family", path: "/community", icon: <Users className="w-6 h-6 text-orange-400" /> },
     { key: "reviews", label: "Reviews", desc: "Check out our Google Reviews", path: "/reviews", icon: <Star className="w-6 h-6 text-yellow-400" /> },
     { key: "location", label: "Location", desc: "We are happy to meet and train you.", path: "/location", icon: <MessageSquare className="w-6 h-6 text-teal-400" /> }
@@ -184,7 +184,7 @@ const AdCard = ({ ad }) => (
              animate-[pulseOpacity_1s_ease-in-out_infinite]
              hover:scale-110 transition-transform duration-300 font-semibold"
       >
-        <Dumbbell className="w-6 h-6" />
+        <GraduationCap className="w-6 h-6" />
         <span>Book Trial</span>
       </Link>
     </div>

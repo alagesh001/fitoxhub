@@ -5,7 +5,7 @@ export default function TrialWaiver() {
   const [fullname, setFullname] = useState("");
   const [leadmob, setLeadmob] = useState("");
   const [bookdate, setBookdate] = useState("");
-  const [agree, setAgree] = useState(false);
+  const [agree, setAgree] = useState(true);
   const [status, setStatus] = useState("");
 
   const gymid =   localStorage.getItem("gymid") || 0;
@@ -96,15 +96,13 @@ export default function TrialWaiver() {
           />
         </div>
 
-        <div className="bg-gray-100 p-3 rounded-lg text-sm text-gray-700">
+        {/* <div className="bg-gray-100 p-3 rounded-lg text-sm text-gray-700">
           <p>
-            By signing this waiver, I acknowledge that participation in physical
-            activities carries risks. I release the Gym from liability for
-            any injury during my trial session.
+            By signing this waiver, I acknowledge that participation in the trial class is for learning purposes only. I understand that the Coaching Centre is not responsible for any personal loss, injury, or inconvenience that may occur during my trial session. I voluntarily release the Coaching Centre from any liability related to my participation.
           </p>
-        </div>
+        </div> */}
 
-        <div className="flex items-center space-x-2">
+        {/* <div className="flex items-center space-x-2">
           <input
             type="checkbox"
             checked={agree}
@@ -114,7 +112,7 @@ export default function TrialWaiver() {
           <label htmlFor="agree" className="text-sm">
             I agree to the terms above
           </label>
-        </div>
+        </div> */}
 
         <button
           onClick={handleSubmit}

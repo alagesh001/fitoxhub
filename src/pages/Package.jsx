@@ -59,7 +59,7 @@ const gradientMap = {
   return (
     <div className="p-8 text-center">
 
-      <h2 className="text-3xl font-extrabold mb-8 text-gray-800">Membership Plans</h2>
+      <h2 className="text-3xl font-extrabold mb-8 text-gray-800">Our Courses</h2>
       
       <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                    {/* Scrollable Ads */}

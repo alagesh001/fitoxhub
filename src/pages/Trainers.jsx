@@ -12,7 +12,7 @@ export default function Trainers() {
   // Define color / style classes per trainer type
   const typeClasses = {
     Normal: "bg-white border-gray-200 text-gray-900",
-    "Personal Trainer":
+    "Personal Tutor":
       "bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 border-purple-600 text-white",
     Both: "bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 border-yellow-600 text-white",
   };
@@ -155,7 +155,7 @@ const externalTrainers = hubadvertData
 
       {/* 🏋️ Gym Trainers Section */}
       <h2 className="text-3xl font-extrabold mb-8 mt-12 text-gray-800">
-        Meet Our Trainers
+        Our Tutors
       </h2>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {hubtrainerData.map((trainer) => (
