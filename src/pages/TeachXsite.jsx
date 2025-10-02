@@ -234,7 +234,7 @@ function Footer() {
 
           <div className="mt-4 text-sm text-gray-600">© {new Date().getFullYear()} TeachX — Mobile First Coaching Management</div>
         </div>
-
+{/* 
         <div className="grid grid-cols-2 gap-6 w-full md:w-auto">
           <div>
             <h5 className="font-semibold">Product</h5>
@@ -253,7 +253,7 @@ function Footer() {
               <li>Privacy</li>
             </ul>
           </div>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
