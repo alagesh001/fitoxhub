@@ -49,20 +49,46 @@ export default function TeachXLanding() {
       </div>
 
       {/* Mobile dropdown */}
-      {menuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white shadow-md p-4 flex flex-col space-y-4 md:hidden z-50">
-          <a className="hover:text-blue-600" href="#features">Features</a>
-          <a className="hover:text-blue-600" href="#pricing">Pricing</a>
-          <a className="hover:text-blue-600" href="#testimonials">Testimonials</a>
-          <a className="hover:text-blue-600" href="#contact">Contact</a>
-          <a
-  href="#contact"
-  className="w-full py-2 bg-blue-600 text-white rounded-md shadow block text-center"
->
-  Get Started
-</a>
-        </div>
-      )}
+     {menuOpen && (
+  <div className="absolute top-16 left-0 w-full bg-white shadow-md p-4 flex flex-col space-y-4 md:hidden z-50">
+    <a
+      href="#features"
+      className="hover:text-blue-600"
+      onClick={() => setMenuOpen(false)}
+    >
+      Features
+    </a>
+    <a
+      href="#pricing"
+      className="hover:text-blue-600"
+      onClick={() => setMenuOpen(false)}
+    >
+      Pricing
+    </a>
+    <a
+      href="#testimonials"
+      className="hover:text-blue-600"
+      onClick={() => setMenuOpen(false)}
+    >
+      Testimonials
+    </a>
+    <a
+      href="#contact"
+      className="hover:text-blue-600"
+      onClick={() => setMenuOpen(false)}
+    >
+      Contact
+    </a>
+    <a
+      href="#contact"
+      className="w-full py-2 bg-blue-600 text-white rounded-md shadow block text-center"
+      onClick={() => setMenuOpen(false)}
+    >
+      Get Started
+    </a>
+  </div>
+)}
+
         </div>
       </header>
 
