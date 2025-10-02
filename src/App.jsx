@@ -11,6 +11,7 @@ import Reviews from "./pages/Reviews";
 import Feedback from "./pages/Feedback";
 import TrialWaiver from "./pages/TrialWaver";
 import Attendance from "./pages/Attendance";
+import TeachXLanding from "./pages/TeachXsite";
 
 import { useLocation } from "react-router-dom";
 import { ApiProvider } from "./ApiContext.jsx";
@@ -53,6 +54,7 @@ export default function App() {
 
   <Route path="/packages" element={<Package />} />
    <Route path="/attendance" element={<Attendance />} />
+   <Route path="/teachx" element={<TeachXLanding />} />
 
   <Route path="/trainers" element={<Trainers />} />
   <Route path="/community" element={<Community />} />
