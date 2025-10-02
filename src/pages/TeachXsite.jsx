@@ -1,11 +1,15 @@
 import React from "react";
+import { useState } from "react";
 
 // TeachX Landing Page - Single-file React component (Tailwind CSS required)
 // Default export a React component so this file can be previewed directly in the canvas.
 import dashboardImg from "../assets/dashpreview.webp";
 
 export default function TeachXLanding() {
+    const [menuOpen, setMenuOpen] = useState(false);
+
   return (
+
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-20">
@@ -18,17 +22,47 @@ export default function TeachXLanding() {
             </div>
           </div>
 
-          <nav className="hidden md:flex gap-6 items-center text-sm">
-            <a className="hover:text-blue-600" href="#features">Features</a>
-            <a className="hover:text-blue-600" href="#pricing">Pricing</a>
-            <a className="hover:text-blue-600" href="#testimonials">Testimonials</a>
-            <a className="hover:text-blue-600" href="#contact">Contact</a>
-            <button className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md shadow">Get Started</button>
-          </nav>
+       <nav className="hidden md:flex items-center gap-6 text-sm">
+  <a className="hover:text-blue-600" href="#features">Features</a>
+  <a className="hover:text-blue-600" href="#pricing">Pricing</a>
+  <a className="hover:text-blue-600" href="#testimonials">Testimonials</a>
+  <a className="hover:text-blue-600" href="#contact">Contact</a>
 
-          <div className="md:hidden">
-            <button className="px-3 py-2 border rounded-md">Menu</button>
-          </div>
+  {/* Get Started button as inline-flex so it stays in the nav row */}
+  <a
+    href="#contact"
+    className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition"
+  >
+    Get Started
+  </a>
+</nav>
+
+
+             {/* Mobile menu button */}
+      <div className="md:hidden">
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="px-3 py-2 border rounded-md"
+        >
+          Menu
+        </button>
+      </div>
+
+      {/* Mobile dropdown */}
+      {menuOpen && (
+        <div className="absolute top-16 left-0 w-full bg-white shadow-md p-4 flex flex-col space-y-4 md:hidden z-50">
+          <a className="hover:text-blue-600" href="#features">Features</a>
+          <a className="hover:text-blue-600" href="#pricing">Pricing</a>
+          <a className="hover:text-blue-600" href="#testimonials">Testimonials</a>
+          <a className="hover:text-blue-600" href="#contact">Contact</a>
+          <a
+  href="#contact"
+  className="w-full py-2 bg-blue-600 text-white rounded-md shadow block text-center"
+>
+  Get Started
+</a>
+        </div>
+      )}
         </div>
       </header>
 
