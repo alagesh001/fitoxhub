@@ -9,6 +9,7 @@ export function ApiProvider({ children }) {
 
       const [hubtrainerData, setHubtrainerData] = useState(null);
     const [hubadvertData, setHubAdvertData] = useState(null);
+      const [hubachievedata, setHubachieveData] = useState(null);
 
   const gymidis =   localStorage.getItem("gymid") || 0;
   useEffect(() => {
@@ -73,9 +74,23 @@ export function ApiProvider({ children }) {
         .catch((err) => console.error("API error:", err));
     }
   }, [hubtrainerData]);
-
+ useEffect(() => {
+    if (!hubachievedata) {
+      axios
+        .get("https://oxadmedia.online/api/get-hub-data", {
+          params: { gymid: gymidis, type: 3 },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            setHubachieveData(res.data.result);
+           // localStorage.setItem("hubData", JSON.stringify(res.data.result));
+          }
+        })
+        .catch((err) => console.error("API error:", err));
+    }
+  }, [hubachievedata]);
   return (
-    <ApiContext.Provider value={{ hubData,hubpackData,hubtrainerData,hubadvertData }}>
+    <ApiContext.Provider value={{ hubData,hubpackData,hubtrainerData,hubadvertData,hubachievedata }}>
       {children}
     </ApiContext.Provider>
   );

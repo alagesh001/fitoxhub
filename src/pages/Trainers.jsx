@@ -107,56 +107,13 @@ const externalTrainers = hubadvertData
   return (
 <div className="px-1 py-8">
      {/* 🔥 External Trainers Ads Section */}
-     <div className="px-3 py-8">
-
- {externalTrainers.length > 0 && (
-        <>
-          <h2 className="text-2xl font-extrabold mb-4 text-gray-800 text-center">
-            Fitox Featured Personal Trainers
-          </h2>
-
-          <div
-            ref={scrollRef}
-            className="mt-6 flex overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth space-x-4"
-          >
-            {externalTrainers.map((trainer) => (
-              <div
-                key={trainer.id}
-                className="relative snap-start min-w-[280px] flex-shrink-0 p-6 rounded-2xl shadow-lg border-4
-                           bg-gradient-to-r from-green-400 via-emerald-400 to-teal-500 text-white"
-              >
-                {/* Location Badge */}
-                <span className="absolute top-3 right-3 px-3 py-1 text-xs font-bold rounded-full bg-white text-green-600 animate-pulse shadow-md">
-                  📍 {trainer.location}
-                </span>
-
-                <h3 className="text-lg font-bold mt-6 mb-1">{trainer.title}</h3>
-                <p className="text-sm opacity-90 mb-3">{trainer.content}</p>
-                <p className="text-lg">{trainer.name}</p>
-                <p className="text-sm opacity-90 mb-2">{trainer.info}</p>
-
-                <a
-                  href={trainer.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white text-green-600 font-semibold rounded-full shadow-md hover:scale-105 transition mt-4"
-                >
-                  <HeartHandshake className="w-5 h-5" />
-                  Connect
-                </a>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-</div>
-
+   
      <div className="px-8 py-8">
 
       {/* 🏋️ Gym Trainers Section */}
-      <h2 className="text-3xl font-extrabold mb-8 mt-12 text-gray-800">
-        Our Tutors
-      </h2>
+     <h2 className="text-3xl font-extrabold mb-8 text-gray-800">
+  Our Tutors
+</h2>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {hubtrainerData.map((trainer) => (
           <div

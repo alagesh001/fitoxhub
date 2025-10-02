@@ -18,6 +18,7 @@ export default function Home() {
     { key: "enquiry", label: "Enquiry", desc: "Get to know about our packages", path: "/enquiry", icon: <User className="w-6 h-6 text-blue-400" /> },
     { key: "trial-waiver", label: "Book Trial", desc: "Trial Waiver and Release form", path: "/trial-waiver", icon: <GraduationCap className="w-6 h-6 text-amber-500" /> },
     { key: "packages", label: "Courses", desc: "Find Packages that suit you", path: "/packages", icon: <Book className="w-6 h-6 text-purple-400" /> },
+        { key: "achievers", label: "Achievers", desc: "Our student achievers", path: "/achiever", icon: <Book className="w-6 h-6 text-green-400" /> },
         { key: "attendance", label: "Mark Attendance", desc: "Win exciting rewards", path: "/attendance", icon: <ClipboardCheck  className="w-6 h-6 text-purple-400" /> },
     { key: "trainers", label: "Tutors", desc: "Achievements & Qualifications of our Trainers", path: "/trainers", icon: <GraduationCap className="w-6 h-6 text-cyan-400" /> },
     { key: "community", label: "Community", desc: "Connect with our fitness family", path: "/community", icon: <Users className="w-6 h-6 text-orange-400" /> },

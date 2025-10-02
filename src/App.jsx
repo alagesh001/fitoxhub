@@ -2,6 +2,8 @@ import { Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import Enquiry from "./pages/Enquiry";
 import Package from "./pages/Package";
+import Achiever from "./pages/Achievers";
+
 import Trainers from "./pages/Trainers";
 import Community from "./pages/Community";
 import Location from "./pages/Location";
@@ -47,6 +49,8 @@ export default function App() {
      <Routes>
   <Route path="/" element={<Home />} />
   <Route path="/enquiry" element={<Enquiry />} />
+    <Route path="/achiever" element={<Achiever />} />
+
   <Route path="/packages" element={<Package />} />
    <Route path="/attendance" element={<Attendance />} />
 
