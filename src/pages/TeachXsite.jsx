@@ -18,8 +18,15 @@ import dashboardImg from "../assets/dashpreview.webp";
 import { motion,AnimatePresence   } from "framer-motion";
 import { FaFingerprint, FaMoneyCheckAlt, FaUserGraduate, FaCalendarAlt, FaChartBar, FaMobileAlt } from "react-icons/fa";
 import { Typewriter } from "react-simple-typewriter";
+import Swal from "sweetalert2";
+
+  const images = [dashboard1, dashboard2, dashboard3, dashboard4];
 
 export default function TeachXLanding() {
+    const [centreName, setCentreName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState(null); // success/failure message
   const [isBlurred, setIsBlurred] = useState(false);
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -46,6 +53,68 @@ const [count, setCount] = useState(0);
  const counterRef = useRef(null);
    const containerRef = useRef(null);
   const [activeDevice, setActiveDevice] = useState(null);
+
+   const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!centreName || !phone) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please fill in all required fields.",
+    });
+    return;
+  }
+
+  try {
+    // Show loader
+    Swal.fire({
+      title: "Submitting...",
+      text: "Please wait",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    const res = await fetch("https://oxadmedia.online/api/register-centre", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ centreName, phone, location: message || "NA" }),
+    });
+
+    const data = await res.json();
+    Swal.close(); // close loader
+
+    if (data.success) {
+      // Reset form
+      setCentreName("");
+      setPhone("");
+      setMessage("");
+
+      // Show success message
+      Swal.fire({
+        icon: "success",
+        title: "Thank you!",
+        text: "You will receive a call from TeachX Team shortly.",
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: data.message || "Something went wrong. Try again.",
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    Swal.close();
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Something went wrong. Try again.",
+    });
+  }
+};
   useEffect(() => {
     setVisibleDeviceLogo(true);
   }, []);
@@ -138,7 +207,12 @@ const testimonials = [
     exit: (dir) => ({ x: dir > 0 ? -300 : 300, opacity: 0 }),
   };
 
-  const images = [dashboard1, dashboard2, dashboard3, dashboard4];
+   useEffect(() => {
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [images]);
 const featuresB = [
     { title: "Mobile-first", desc: "Fully responsive dashboard and a lightweight mobile app for teachers.", icon: FaMobileAlt },
   { title: "Unlimited Students", desc: "Maintain student data, attendance and payment history.", icon: FaUserGraduate },
@@ -253,7 +327,7 @@ const handleDragEnd = (_, info) => {
 
 <div className="min-h-screen bg-gray-50 text-gray-800 font-sans" >
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-20">
+  <header className="sticky top-0 z-20 bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
 <div className="flex items-center">
@@ -424,24 +498,21 @@ const handleDragEnd = (_, info) => {
            <div className="p-6 space-y-6">
   {/* Dashboard Carousel */}
    <div className="relative w-full h-64 overflow-hidden rounded-lg shadow-lg">
-      <AnimatePresence custom={direction}>
+      {images.map((img, i) => (
         <motion.img
-          key={current}
-          src={images[current]}
-          alt={`Dashboard ${current + 1}`}
+          key={i}
+          src={img}
+          alt={`Dashboard ${i + 1}`}
           className="absolute top-0 left-0 w-full h-full object-cover cursor-grab"
-          custom={direction}
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
+          animate={{ x: `${100 * (i - current)}%` }}
           transition={{ type: "spring", stiffness: 120, damping: 20 }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.2}
           onDragEnd={handleDragEnd}
+          style={{ pointerEvents: i === current ? "auto" : "none" }}
         />
-      </AnimatePresence>
+      ))}
 
       {/* Navigation Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
@@ -451,7 +522,7 @@ const handleDragEnd = (_, info) => {
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               i === current ? "bg-blue-600 scale-125" : "bg-gray-300"
             }`}
-            onClick={() => setCurrent([i, i > current ? 1 : -1])}
+            onClick={() => setCurrent(i)}
           ></div>
         ))}
       </div>
@@ -503,7 +574,7 @@ const handleDragEnd = (_, info) => {
         Everything you need to manage students, batches and payments — without complicated setup.
       </p>
 
-      <div className="mt-8 space-y-6">
+      <div className="mt-8 space-y-6 overflow-x-hidden">
         {featuresB.map((f, i) => {
           const Icon = f.icon;
           const isLeft = i % 2 === 0; // alternate sides
@@ -692,44 +763,64 @@ const handleDragEnd = (_, info) => {
         </motion.div>
 
         {/* Form */}
-        <motion.form
-          className="space-y-3"
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
+       <motion.form
+      className="space-y-3"
+      initial={{ opacity: 0, x: 30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.6, delay: 0.6 }}
+      onSubmit={handleSubmit}
+    >
+      <div>
+        <label className="block text-sm">Centre name</label>
+        <input
+          value={centreName}
+          onChange={(e) => setCentreName(e.target.value)}
+          className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+          placeholder="e.g. Sunshine Coaching"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm">Phone</label>
+        <input
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value.replace(/\D/, ""))} // digits only
+          className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+          placeholder="Contact number"
+          required
+        />
+      </div>
+
+ <div>
+  <label className="block text-sm">Location </label>
+  <input
+    type="text"
+    value={message}
+    onChange={(e) => setMessage(e.target.value)}
+    className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+    placeholder="Location"
+  />
+</div>
+
+      <div>
+        <motion.button
+          type="submit"
+          className="px-4 py-2 mt-7 bg-blue-600 text-white rounded-md"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <div>
-            <label className="block text-sm">Centre name</label>
-            <input
-              className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-              placeholder="e.g. Sunshine Coaching"
-            />
-          </div>
-          <div>
-            <label className="block text-sm">Phone / Email</label>
-            <input
-              className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-              placeholder="Contact number or email"
-            />
-          </div>
-          <div>
-            <label className="block text-sm">Message (optional)</label>
-            <textarea
-              className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-              rows={3}
-              placeholder="How can we help?"
-            />
-          </div>
-          <div>
-            <motion.button
-              className="px-4 py-2 bg-blue-600 text-white rounded-md"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Request a demo
-            </motion.button>
-          </div>
-        </motion.form>
+          Request a demo
+        </motion.button>
+      </div>
+
+      {status && (
+        <p className={`mt-2 ${status.success ? "text-green-600" : "text-red-600"}`}>
+          {status.message}
+        </p>
+      )}
+    </motion.form>
       </div>
     </section>
    
