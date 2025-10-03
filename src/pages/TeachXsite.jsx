@@ -15,6 +15,9 @@ import dashboard4 from "../assets/dashboard4.webp";
 // TeachX Landing Page - Single-file React component (Tailwind CSS required)
 // Default export a React component so this file can be previewed directly in the canvas.
 import dashboardImg from "../assets/dashpreview.webp";
+import { motion } from "framer-motion";
+import { FaFingerprint, FaMoneyCheckAlt, FaUserGraduate, FaCalendarAlt, FaChartBar, FaMobileAlt } from "react-icons/fa";
+import { Typewriter } from "react-simple-typewriter";
 
 export default function TeachXLanding() {
   const [isBlurred, setIsBlurred] = useState(false);
@@ -66,7 +69,14 @@ const features = [
 ];
   const images = [dashboard1, dashboard2, dashboard3, dashboard4];
   const [current, setCurrent] = useState(0);
-
+const featuresB = [
+    { title: "Mobile-first", desc: "Fully responsive dashboard and a lightweight mobile app for teachers.", icon: FaMobileAlt },
+  { title: "Unlimited Students", desc: "Maintain student data, attendance and payment history.", icon: FaUserGraduate },
+    { title: "Multiple Batches", desc: "Organise batches, allocate teachers and publish schedules.", icon: FaCalendarAlt },
+  { title: "Biometric/QR Attendance", desc: "Students scan Biometric/QR code to mark attendance — fast and accurate.", icon: FaFingerprint },
+  { title: "Fee Management", desc: "Manage and send reminders for renew, due or expiry.", icon: FaMoneyCheckAlt },
+  { title: "Reports & Analytics", desc: "Simple reports for attendance, collection and student data.", icon: FaChartBar },
+];
    useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % images.length);
@@ -239,10 +249,21 @@ const features = [
         coaching centres manage and teach better.
       </h2>
 
-     <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-  Attendance, fees, batches, student profiles, QR-based check-ins and a simple{" "}
-  <span className="font-bold text-blue-600">mobile-first dashboard</span> — everything a coaching centre needs.
-</p>
+    <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+      Attendance, fees, batches, student profiles, QR-based check-ins and a simple{" "}
+      <span className="font-bold text-blue-600">
+        <Typewriter
+          words={["mobile-first dashboard"]}
+          loop={0} // 0 = infinite
+          cursor
+          cursorStyle="|"
+          typeSpeed={100}
+          deleteSpeed={50}
+          delaySpeed={1500}
+        />
+      </span>{" "}
+      — everything a coaching centre needs.
+    </p>
    <div
   ref={containerRef}
   className="px-5 mt-8 w-full flex flex-wrap items-center justify-between"
@@ -303,21 +324,34 @@ const features = [
 
   {/* Features Grid */}
   
-    <div className="mt-6 grid grid-cols-2 gap-4">
-    {features.map((f, i) => {
-  const Icon = f.icon;
-  return (
-    <div
-      key={i}
-      className={`h-28 bg-gradient-to-br ${f.gradient} rounded-lg flex flex-col items-center justify-center shadow-sm`}
-    >
-      <Icon className={`h-8 w-8 mb-2 ${f.iconColor}`} />
-      <span className={`text-lg font-semibold ${f.color}`}>{f.title}</span>
-      <span className="text-xs text-gray-500">{f.subtitle}</span>
-    </div>
-  );
-})}
-    </div>
+<div className="mt-6 grid grid-cols-2 gap-4">
+  {features.map((f, i) => {
+    const Icon = f.icon;
+    return (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.5, delay: i * 0.1 }}
+        className={`bg-gradient-to-br ${f.gradient} rounded-lg flex flex-col items-center shadow-sm p-4 min-h-[120px]`}
+      >
+        {/* Icon stays fixed at top */}
+        <div className="flex-shrink-0">
+          <Icon className={`h-10 w-10 mb-2 ${f.iconColor}`} />
+        </div>
+
+        {/* Text block */}
+        <div className="flex flex-col items-center justify-center text-center flex-grow">
+          <span className={`text-lg font-semibold ${f.color}`}>{f.title}</span>
+          <span className="text-xs text-gray-500">{f.subtitle}</span>
+        </div>
+      </motion.div>
+    );
+  })}
+</div>
+
+
 </div>
 
 </div>
@@ -328,19 +362,38 @@ const features = [
         </section>
 
         {/* Features */}
-        <section id="features" className="mt-20">
-          <h3 className="text-2xl font-bold">Features built for coaching centres</h3>
-          <p className="text-gray-600 mt-2">Everything you need to manage students, batches and payments — without complicated setup.</p>
+   <section id="features" className="mt-20 space-y-8">
+      <h3 className="text-2xl font-bold">Features built for coaching centres</h3>
+      <p className="text-gray-600 mt-2">
+        Everything you need to manage students, batches and payments — without complicated setup.
+      </p>
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <FeatureCard title="Biometric/QR Attendance" desc="Students scan Biometric/QR code to mark attendance — fast and accurate." />
-            <FeatureCard title="Fee Management" desc="Manage and send reminders for renew, due or expiry." />
-            <FeatureCard title="Student Profiles" desc="Maintain student data, attendance and payment history." />
-            <FeatureCard title="Timetable & Batches" desc="Organise batches, allocate teachers and publish schedules." />
-            <FeatureCard title="Reports & Analytics" desc="Simple reports for attendance, collection and student data." />
-            <FeatureCard title="Mobile-first" desc="Fully responsive dashboard and a lightweight mobile app for teachers." />
-          </div>
-        </section>
+      <div className="mt-8 space-y-6">
+        {featuresB.map((f, i) => {
+          const Icon = f.icon;
+          const isLeft = i % 2 === 0; // alternate sides
+
+          return (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.5 }}
+              className={`flex items-center gap-4 ${isLeft ? "flex-row" : "flex-row-reverse"}`}
+            >
+              <div className="text-blue-600 text-3xl">
+                <Icon />
+              </div>
+              <div className="bg-gray-50 p-4 rounded-lg shadow-md flex-1">
+                <h4 className="font-semibold">{f.title}</h4>
+                <p className="text-gray-600 text-sm mt-1">{f.desc}</p>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </section>
 
         {/* Pricing */}
         <section id="pricing" className="mt-20">
