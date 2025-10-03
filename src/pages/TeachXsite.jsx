@@ -250,9 +250,8 @@ const handleDragEnd = (_, info) => {
     };
   }, []);
   return (
-<body className="overflow-x-hidden">
 
-<div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
+<div className="min-h-screen bg-gray-50 text-gray-800 font-sans" >
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -739,7 +738,6 @@ const handleDragEnd = (_, info) => {
 
       <Footer />
     </div>
-    </body>
   );
 }
 
