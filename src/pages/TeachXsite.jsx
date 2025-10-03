@@ -251,7 +251,7 @@ const handleDragEnd = (_, info) => {
   }, []);
   return (
 
-    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
+<div className="min-h-screen bg-gray-50 text-gray-800 font-sans overflow-x-hidden">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -654,29 +654,7 @@ const handleDragEnd = (_, info) => {
 
     </section>
 
-        {/* Contact / CTA */}
-           <motion.section
-      id="contact"
-      className="mt-20 mb-20 bg-white p-8 rounded-xl shadow"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-      variants={containerVariants}
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Left Info Panel */}
-        <motion.div variants={itemVariants}>
-          <h4 className="text-xl font-semibold">Get TeachX for your centre</h4>
-          <p className="mt-2 text-gray-600">
-            Schedule a demo or start a free trial — no credit card needed.
-          </p>
-
-          <ul className="mt-4 text-sm text-gray-600">
-            <li>• 7-day free trial</li>
-            <li>• Free data migration (selected plans)</li>
-            <li>• Phone & chat support</li>
-          </ul>
-        </motion.div>
+     
 
         {/* Form */}
            <section id="contact" className="mt-20 mb-20 bg-white p-8 rounded-xl shadow">
@@ -754,8 +732,8 @@ const handleDragEnd = (_, info) => {
         </motion.form>
       </div>
     </section>
-      </div>
-    </motion.section>
+   
+   
       </main>
 
       <Footer />
