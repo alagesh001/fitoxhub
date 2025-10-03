@@ -15,17 +15,40 @@ import dashboard4 from "../assets/dashboard4.webp";
 // TeachX Landing Page - Single-file React component (Tailwind CSS required)
 // Default export a React component so this file can be previewed directly in the canvas.
 import dashboardImg from "../assets/dashpreview.webp";
-import { motion } from "framer-motion";
+import { motion,AnimatePresence   } from "framer-motion";
 import { FaFingerprint, FaMoneyCheckAlt, FaUserGraduate, FaCalendarAlt, FaChartBar, FaMobileAlt } from "react-icons/fa";
 import { Typewriter } from "react-simple-typewriter";
 
 export default function TeachXLanding() {
   const [isBlurred, setIsBlurred] = useState(false);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  };
 
-    const [menuOpen, setMenuOpen] = useState(false);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+  };
+const testimonialTabColors = [
+  "bg-yellow-100",
+  "bg-blue-100",
+  "bg-green-100",
+  "bg-red-100",
+  "bg-purple-100",
+  "bg-pink-100",
+  "bg-indigo-100",
+  "bg-teal-100",
+  "bg-orange-100",
+  "bg-gray-100",
+];    const [menuOpen, setMenuOpen] = useState(false);
 const [count, setCount] = useState(0);
  const counterRef = useRef(null);
    const containerRef = useRef(null);
+  const [activeDevice, setActiveDevice] = useState(null);
+  useEffect(() => {
+    setVisibleDeviceLogo(true);
+  }, []);
 
   const [visibleDeviceLogo, setVisibleDeviceLogo] = useState(false);
   const devices = [
@@ -67,8 +90,55 @@ const features = [
     iconColor: "text-yellow-400",
   },
 ];
+
+const testimonials = [
+  {
+    name: "Ravi Sharma",
+    role: "Centre Owner",
+    text: "TeachX reduced our fee delays by 70% — simple and reliable.",
+  },
+  {
+    name: "Priya Verma",
+    role: "Principal",
+    text: "Attendance tracking is so much faster now. Parents love the attendance tracking.",
+  },
+  {
+    name: "Aman Singh",
+    role: "Admin",
+    text: "Setup was quick, support team helped migrate our data.",
+  },
+  {
+    name: "Sonia Kapoor",
+    role: "Coordinator",
+    text: "The batch-wise management feature has made scheduling so easy for our team.",
+  },
+  {
+    name: "Vikram Joshi",
+    role: "Gym Owner",
+    text: "The mobile-first dashboard allows me to check student attendance anytime, anywhere.",
+  },
+];
+    const [[currentT, directionT], setCurrentT] = useState([0, 0]);
+
+  // Auto-slide every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentT(([prev]) => [(prev + 1) % testimonials.length, 1]);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
+  const nextSlideT = (dir) => {
+    setCurrentT(([prev]) => [(prev + dir + testimonials.length) % testimonials.length, dir]);
+  };
+
+  const variantsT = {
+    enter: (dir) => ({ x: dir > 0 ? 300 : -300, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (dir) => ({ x: dir > 0 ? -300 : 300, opacity: 0 }),
+  };
+
   const images = [dashboard1, dashboard2, dashboard3, dashboard4];
-  const [current, setCurrent] = useState(0);
 const featuresB = [
     { title: "Mobile-first", desc: "Fully responsive dashboard and a lightweight mobile app for teachers.", icon: FaMobileAlt },
   { title: "Unlimited Students", desc: "Maintain student data, attendance and payment history.", icon: FaUserGraduate },
@@ -77,16 +147,48 @@ const featuresB = [
   { title: "Fee Management", desc: "Manage and send reminders for renew, due or expiry.", icon: FaMoneyCheckAlt },
   { title: "Reports & Analytics", desc: "Simple reports for attendance, collection and student data.", icon: FaChartBar },
 ];
+
+const [[current, direction], setCurrent] = useState([0, 0]);
+
+  // Auto-slide every 3 seconds
    useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-      setIsBlurred(true); // start blurred for next image
-      setTimeout(() => setIsBlurred(false), 300); // turn clear after 0.3s
-    }, 3000);
-
+    const interval = setInterval(() => nextSlide(1), 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [images.length]);
 
+const nextSlide = (dir) => {
+  setCurrent(([prev]) => [
+    (prev + dir + images.length) % images.length,
+    dir,
+  ]);
+};
+
+  const variants = {
+  enter: (dir) => ({
+    x: dir > 0 ? 300 : -300,
+    scale: 0.8,
+    opacity: 0,
+    filter: "blur(4px)",
+  }),
+  center: {
+    x: 0,
+    scale: 1,
+    opacity: 1,
+    filter: "blur(0px)",
+  },
+  exit: (dir) => ({
+    x: dir > 0 ? -300 : 300,
+    scale: 0.8,
+    opacity: 0,
+    filter: "blur(4px)",
+  }),
+};
+
+const handleDragEnd = (_, info) => {
+  const threshold = 50; // minimum swipe distance
+  if (info.offset.x > threshold) nextSlide(-1);
+  else if (info.offset.x < -threshold) nextSlide(1);
+};
   useEffect(() => {
     let timer = null;
 
@@ -264,24 +366,37 @@ const featuresB = [
       </span>{" "}
       — everything a coaching centre needs.
     </p>
-   <div
-  ref={containerRef}
-  className="px-5 mt-8 w-full flex flex-wrap items-center justify-between"
->
-      {devices.map((device) => (
-        <div
-          key={device.name}
-          className={`flex items-center gap-3 opacity-0 ${
-            visibleDeviceLogo ? "animate-fadeIn" : ""
-          }`}
-          style={{ animationDelay: visibleDeviceLogo ? `${device.delay}ms` : "0ms" }}
-        >
-        <div className="flex flex-col items-center gap-2 opacity-0 animate-fadeIn" style={{ animationDelay: `${device.delay}ms` }}>
-  <img src={device.logo} alt={device.name} className="h-10 w-10" />
-  <span className="text-gray-600 font-medium">{device.name}</span>
-</div>
-        </div>
-      ))}
+<div
+      ref={containerRef}
+      className="px-5 mt-8 w-full flex flex-wrap items-center justify-between"
+    >
+      {devices.map((device) => {
+        const isActive = activeDevice === device.name;
+
+        return (
+          <div
+            key={device.name}
+            className={`flex items-center gap-3 opacity-0 ${
+              visibleDeviceLogo ? "animate-fadeIn" : ""
+            }`}
+            style={{ animationDelay: visibleDeviceLogo ? `${device.delay}ms` : "0ms" }}
+          >
+            <div
+              onClick={() => setActiveDevice(device.name)}
+              className={`flex flex-col items-center gap-2 cursor-pointer
+                transition-transform duration-300
+                ${isActive ? "pop-bounce" : "scale-100"}`}
+              style={{ 
+                // Remove any animation delay for the clicked pop
+                animationDelay: isActive ? "0ms" : `${device.delay}ms` 
+              }}
+            >
+              <img src={device.logo} alt={device.name} className="h-10 w-10" />
+              <span className="text-gray-600 font-medium">{device.name}</span>
+            </div>
+          </div>
+        );
+      })}
     </div>
       <div className="mt-6 flex gap-3 justify-start">
         <a
@@ -308,18 +423,38 @@ const featuresB = [
               {/* Mock Dashboard preview */}
            <div className="p-6 space-y-6">
   {/* Dashboard Carousel */}
-       <div className="w-full h-48 overflow-hidden rounded-md relative">
-      {images.map((img, i) => (
-        <img
-          key={i}
-          src={img}
-          alt={`Dashboard ${i + 1}`}
-          className={`
-            absolute top-0 left-0 w-full h-full object-cover transition-all duration-1000
-            ${i === current ? (isBlurred ? "blur-md" : "blur-0") : "opacity-0"}
-          `}
+   <div className="relative w-full h-64 overflow-hidden rounded-lg shadow-lg">
+      <AnimatePresence custom={direction}>
+        <motion.img
+          key={current}
+          src={images[current]}
+          alt={`Dashboard ${current + 1}`}
+          className="absolute top-0 left-0 w-full h-full object-cover cursor-grab"
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ type: "spring", stiffness: 120, damping: 20 }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={handleDragEnd}
         />
-      ))}
+      </AnimatePresence>
+
+      {/* Navigation Dots */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        {images.map((_, i) => (
+          <div
+            key={i}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              i === current ? "bg-blue-600 scale-125" : "bg-gray-300"
+            }`}
+            onClick={() => setCurrent([i, i > current ? 1 : -1])}
+          ></div>
+        ))}
+      </div>
     </div>
 
   {/* Features Grid */}
@@ -396,92 +531,231 @@ const featuresB = [
     </section>
 
         {/* Pricing */}
-        <section id="pricing" className="mt-20">
-          <h3 className="text-2xl font-bold">Pricing</h3>
-          <p className="text-gray-600 mt-2">Simple plans that scale with your centre. No hidden fees.</p>
+         <section id="pricing" className="mt-20">
+      {/* Heading Animation */}
+      <motion.h3
+        className="text-2xl font-bold"
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Pricing
+      </motion.h3>
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-<PricingCard
-  title="Starter"
-  price="Free"
-  bullets={[
-    "Access for up to 7 days",
-    "Try all features without restrictions",
-    "No commitment or lock-in"
-  ]}
-/><PricingCard
-  title="Growth (Small to Mid-Size)"
-  price="₹9,999 / year"
-  bullets={[
-    "Unlimited students",
-    "Customizable QR-enabled website",
-    "Attendance Tracker",
-    "Fee reminders",
-    "Batch-wise management",
-    "Mobile-first dashboard",
-    "Analytics",
-    "Lead management",
-    "Export data to Excel"
-  ]}
-  featured
-/>           
-<PricingCard
-  title="Pro (Franchise)"
-  price="Custom"
-  bullets={[
-    "Includes all features from the Growth Pack",
-    "Tailored biometric integrations for your centre",
-    "Priority support whenever you need it",
-    "Dedicated onboarding and setup assistance"
-  ]}
-/>          </div>
-        </section>
+      <motion.p
+        className="text-gray-600 mt-2"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        Simple plans that scale with your centre. No hidden fees.
+      </motion.p>
+
+      {/* Cards Animation */}
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[
+          {
+            title: "Starter",
+            price: "Free",
+            bullets: [
+              "Access for up to 7 days",
+              "Try all features without restrictions",
+              "No commitment or lock-in",
+            ],
+          },
+          {
+            title: "Growth (Small to Mid-Size)",
+            price: "₹9,999 / year",
+            bullets: [
+              "Unlimited students",
+              "Customizable QR-enabled website",
+              "Attendance Tracker",
+              "Fee reminders",
+              "Batch-wise management",
+              "Mobile-first dashboard",
+              "Analytics",
+              "Lead management",
+              "Export data to Excel",
+            ],
+            featured: true,
+          },
+          {
+            title: "Pro (Franchise)",
+            price: "Custom",
+            bullets: [
+              "Includes all features from the Growth Pack",
+              "Tailored biometric integrations for your centre",
+              "Priority support whenever you need it",
+              "Dedicated onboarding and setup assistance",
+            ],
+          },
+        ].map((plan, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0.8, y: 40 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: i * 0.2 }}
+            whileHover={{ scale: 1.05, y: -5 }}
+          >
+            <PricingCard {...plan} />
+          </motion.div>
+        ))}
+      </div>
+    </section>
 
         {/* Testimonials */}
-        <section id="testimonials" className="mt-20">
-          <h3 className="text-2xl font-bold">What centre owners say</h3>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Testimonial name="Ravi Sharma" role="Centre Owner">"TeachX reduced our fee delays by 70% — simple and reliable."</Testimonial>
-            <Testimonial name="Priya Verma" role="Principal">"Attendance tracking is so much faster now. Parents love the attendance tracking."</Testimonial>
-            <Testimonial name="Aman Singh" role="Admin">"Setup was quick, support team helped migrate our data."</Testimonial>
-          </div>
-        </section>
+    <section id="testimonials" className="mt-20 relative">
+      <h3 className="text-2xl font-bold mb-6 text-center">
+        What centre owners say
+      </h3>
+<div className="relative w-full md:w-2/3 mx-auto overflow-hidden h-72">
+  <AnimatePresence custom={directionT}>
+    <motion.div
+      key={currentT}
+      custom={directionT}
+      variants={variantsT}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      className={`absolute top-0 left-0 w-full p-6 shadow-lg rounded-lg cursor-grab ${
+        testimonialTabColors[currentT % testimonialTabColors.length]
+      }`}
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.2}
+      onDragEnd={(e, info) => {
+        if (info.offset.x < -50) nextSlideT(1);
+        else if (info.offset.x > 50) nextSlideT(-1);
+      }}
+    >
+      <Testimonial
+        name={testimonials[currentT].name}
+        role={testimonials[currentT].role}
+      >
+        {testimonials[currentT].text}
+      </Testimonial>
+    </motion.div>
+  </AnimatePresence>
+</div>
+
+{/* Navigation Dots OUTSIDE the slide container */}
+<div className="flex justify-center gap-2">
+  {testimonials.map((_, i) => (
+    <div
+      key={i}
+      className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer ${
+        i === currentT ? "bg-blue-600 scale-125" : "bg-gray-300"
+      }`}
+      onClick={() => setCurrentT([i, i > currentT ? 1 : -1])}
+    ></div>
+  ))}
+</div>
+
+    </section>
 
         {/* Contact / CTA */}
-        <section id="contact" className="mt-20 mb-20 bg-white p-8 rounded-xl shadow">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="text-xl font-semibold">Get TeachX for your centre</h4>
-              <p className="mt-2 text-gray-600">Schedule a demo or start a free trial — no credit card needed.</p>
+           <motion.section
+      id="contact"
+      className="mt-20 mb-20 bg-white p-8 rounded-xl shadow"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={containerVariants}
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Left Info Panel */}
+        <motion.div variants={itemVariants}>
+          <h4 className="text-xl font-semibold">Get TeachX for your centre</h4>
+          <p className="mt-2 text-gray-600">
+            Schedule a demo or start a free trial — no credit card needed.
+          </p>
 
-              <ul className="mt-4 text-sm text-gray-600">
-                <li>• 7-day free trial</li>
-                <li>• Free data migration (selected plans)</li>
-                <li>• Phone & chat support</li>
-              </ul>
-            </div>
+          <ul className="mt-4 text-sm text-gray-600">
+            <li>• 7-day free trial</li>
+            <li>• Free data migration (selected plans)</li>
+            <li>• Phone & chat support</li>
+          </ul>
+        </motion.div>
 
-            <div>
-              <form className="space-y-3">
-                <div>
-                  <label className="block text-sm">Centre name</label>
-                  <input className="w-full mt-1 px-3 py-2 border rounded-md" placeholder="e.g. Sunshine Coaching" />
-                </div>
-                <div>
-                  <label className="block text-sm">Phone / Email</label>
-                  <input className="w-full mt-1 px-3 py-2 border rounded-md" placeholder="Contact number or email" />
-                </div>
-                <div>
-                  <label className="block text-sm">Message (optional)</label>
-                  <textarea className="w-full mt-1 px-3 py-2 border rounded-md" rows={3} placeholder="How can we help?" />
-                </div>
-                <div>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-md">Request a demo</button>
-                </div>
-              </form>
-            </div>
+        {/* Form */}
+           <section id="contact" className="mt-20 mb-20 bg-white p-8 rounded-xl shadow">
+      {/* Heading Animation */}
+      <motion.h4
+        className="text-xl font-semibold"
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Get TeachX for your centre
+      </motion.h4>
+
+      <motion.p
+        className="mt-2 text-gray-600"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        Schedule a demo or start a free trial — no credit card needed.
+      </motion.p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        {/* Info Panel */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <ul className="text-sm text-gray-600">
+            <li>• 7-day free trial</li>
+            <li>• Free data migration (selected plans)</li>
+            <li>• Phone & chat support</li>
+          </ul>
+        </motion.div>
+
+        {/* Form */}
+        <motion.form
+          className="space-y-3"
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <div>
+            <label className="block text-sm">Centre name</label>
+            <input
+              className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+              placeholder="e.g. Sunshine Coaching"
+            />
           </div>
-        </section>
+          <div>
+            <label className="block text-sm">Phone / Email</label>
+            <input
+              className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+              placeholder="Contact number or email"
+            />
+          </div>
+          <div>
+            <label className="block text-sm">Message (optional)</label>
+            <textarea
+              className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+              rows={3}
+              placeholder="How can we help?"
+            />
+          </div>
+          <div>
+            <motion.button
+              className="px-4 py-2 bg-blue-600 text-white rounded-md"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Request a demo
+            </motion.button>
+          </div>
+        </motion.form>
+      </div>
+    </section>
+      </div>
+    </motion.section>
       </main>
 
       <Footer />
