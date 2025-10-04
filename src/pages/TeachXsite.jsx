@@ -886,45 +886,39 @@ function Testimonial({ children, name, role }) {
 
 function Footer() {
   return (
-    <footer className="bg-white border-t">
-      <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-start gap-6">
-        <div>
-          <div className="flex items-center gap-3">
-<div className="flex items-center">
-  <img 
-    src={Logo} 
-    alt="TeachX Logo" 
-    className="h-10 w-10 object-contain rounded-full shadow"
-  />
-</div>            <div>
-              <div className="font-semibold">TeachX</div>
-              <div className="text-sm text-gray-500">School · Coaching · Institute Management</div>
-            </div>
-          </div>
-
-          <div className="mt-4 text-sm text-gray-600">© {new Date().getFullYear()} TeachX — Mobile First Coaching Management</div>
+  <footer className="bg-white border-t">
+  <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-start gap-6">
+    <div>
+      <div className="flex items-center gap-3">
+        <div className="flex items-center">
+          <img 
+            src={Logo} 
+            alt="TeachX Logo" 
+            className="h-10 w-10 object-contain rounded-full shadow"
+          />
         </div>
-{/* 
-        <div className="grid grid-cols-2 gap-6 w-full md:w-auto">
-          <div>
-            <h5 className="font-semibold">Product</h5>
-            <ul className="mt-2 text-sm text-gray-600">
-              <li>Pricing</li>
-              <li>Demo</li>
-              <li>Features</li>
-            </ul>
+        <div>
+          <div className="font-semibold text-lg">TeachX</div>
+          <div className="text-sm text-gray-500">
+            School · Coaching · Institute Management
           </div>
-
-          <div>
-            <h5 className="font-semibold">Company</h5>
-            <ul className="mt-2 text-sm text-gray-600">
-              <li>About</li>
-              <li>Contact</li>
-              <li>Privacy</li>
-            </ul>
-          </div>
-        </div> */}
+        </div>
       </div>
-    </footer>
+
+     <div className="mt-4 space-y-1 text-sm text-gray-600">
+  <div>
+    <span className="font-medium text-gray-800">Mobile:</span> +91 81486 02102
+  </div>
+  <div>
+    <span className="font-medium text-gray-800">Email:</span> helpdesk@oxadmedia.in
+  </div>
+</div>
+
+      <div className="mt-4 text-sm text-gray-600">
+        © {new Date().getFullYear()} TeachX — Mobile First Coaching Management
+      </div>
+    </div>
+  </div>
+  </footer>
   );
 }
