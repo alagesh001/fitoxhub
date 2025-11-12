@@ -55,7 +55,7 @@ export default function TrialWaiver() {
   return (
     <div className="max-w-xl mx-auto py-12 px-6">
       <h2 className="text-3xl font-bold text-center mb-6">
-        Trial Waiver & Release Form
+        Book Personal Trainer
       </h2>
 
       <div className="space-y-4 bg-white p-6 rounded-xl shadow-md border border-gray-200">
@@ -85,7 +85,7 @@ export default function TrialWaiver() {
 
         {/* Booking date */}
         <div>
-          <label className="block text-sm font-medium mb-1">Trial Date</label>
+          <label className="block text-sm font-medium mb-1">Date</label>
           <input
             type="date"
             value={bookdate}
@@ -100,7 +100,7 @@ export default function TrialWaiver() {
           <p>
             By signing this waiver, I acknowledge that participation in physical
             activities carries risks. I release the Gym from liability for
-            any injury during my trial session.
+            any injury during my PT session.
           </p>
         </div>
 

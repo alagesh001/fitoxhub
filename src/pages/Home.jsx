@@ -185,7 +185,7 @@ const AdCard = ({ ad }) => (
              hover:scale-110 transition-transform duration-300 font-semibold"
       >
         <Dumbbell className="w-6 h-6" />
-        <span>Book Trial</span>
+        <span>Book PT</span>
       </Link>
     </div>
   );
